@@ -26,15 +26,24 @@ int main()
 		for (int j = vctNum1.size() - 1, n = m; j >= 0; j--, n++) {
 			int tempInt1 = vctNum1[j] * vctNum2[i] / 10;
 			int tempRes1 = vctNum1[j] * vctNum2[i] % 10;
-			aResult[n] = (aResult[n] + tempRes1) % 10;
-			aResult[n + 1] = (aResult[n + 1] + tempInt1 + temp + (aResult[n] + tempRes1) / 10) % 10;
-			temp = (aResult[n + 1] + tempInt1 + temp + (aResult[n] + tempRes1) / 10) / 10;
+			int tempInt2 = (aResult[n] + tempRes1) / 10;
+			int tempRes2 = (aResult[n] + tempRes1) % 10;
+			aResult[n] = tempRes2;
+			int tempInt3 = (aResult[n + 1] + tempInt1 + temp + tempInt2) / 10;
+			int tempRes3 = (aResult[n + 1] + tempInt1 + temp + tempInt2) % 10;
+			aResult[n + 1] = tempRes3;
+			temp = tempInt3;
 		}
 	}
 
 
-	for (int i = 0; i < 400; i++) {
-		cout << aResult[i];
+	for (int i = 399, count = 0; i >= 0; i--) {
+		if (aResult[i] > 0) {
+			count++;
+		}
+		if (count > 0) {
+			cout << aResult[i];
+		}
 	}
 	cout << endl;
 	return 0;
