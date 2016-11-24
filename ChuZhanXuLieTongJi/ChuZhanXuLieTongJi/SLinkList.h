@@ -22,7 +22,7 @@ public:
 public:
 	void Insert(T aData, T bData);		//插入新节点
 	void AddHead(T data);		//插入新节点作为链表头
-	Node<T>* GetHead();		//输出链表头数据
+	T GetHead();		//输出链表头数据
 	void DeleteHead();		//删除链表头节点内容，下一结点作为新表头
 	void Delete(T data);		//删除特定数据的结点
 	Node<T>* Search(T data);		//搜索并返回特定数据的结点
@@ -45,9 +45,7 @@ inline SLinkList<T>::SLinkList()
 template<class T>
 inline SLinkList<T>::SLinkList(T initData)
 {
-	Head = new Node<T>;
-	Head->data = initData;
-	Head->next = NULL;
+	Head = new Node<T>(initData);
 }
 
 template <class T>
@@ -58,7 +56,8 @@ inline SLinkList<T>::~SLinkList()
 template<class T>
 inline void SLinkList<T>::Insert(T aData, T bData)
 {
-	Node<T> *newNode(bData), *curNode, *preNode;
+	Node<T> *newNode, *curNode, *preNode;
+	newNode = new Node<T>(bData);
 	curNode = Head;
 	if (Head == NULL) {
 		newNode->next = NULL;
@@ -89,15 +88,16 @@ inline void SLinkList<T>::Insert(T aData, T bData)
 template<class T>
 inline void SLinkList<T>::AddHead(T data)
 {
-	Node<T>* newNode(data);
+	Node<T>* newNode;
+	newNode = new Node<T>(data);
 	newNode->next = Head;
 	Head = newNode;
 }
 
 template<class T>
-inline Node<T>* SLinkList<T>::GetHead()
+inline T SLinkList<T>::GetHead()
 {
-	return Head;
+	return Head->data;
 }
 
 template<class T>
@@ -187,7 +187,7 @@ inline bool SLinkList<T>::IsEmpty()
 template<class T>
 inline int SLinkList<T>::GetCount()
 {
-	int count;
+	int count = 0;
 	if (Head == NULL)
 		return count = 0;
 	Node<T>* curNode;
