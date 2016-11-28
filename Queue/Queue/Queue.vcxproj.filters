@@ -27,6 +27,12 @@
     <ClInclude Include="SLinkList.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="QueueLink.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueArray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
