@@ -12,9 +12,25 @@ private:
 	BinaryTreeNode<T>* left;
 	BinaryTreeNode<T>* right;
 public:
-	BinaryTreeNode();		//默认构造函数
-	BinaryTreeNode(const T& ele);		//给定数据的构造函数
-	BinaryTreeNode(const T& ele, BinaryTreeNode<T> *l, BinaryTreeNode<T> *r);		//给定数据和左右子树的构造函数
+	BinaryTreeNode()
+	{
+		left = NULL;
+		right = NULL;
+	};		//默认构造函数
+	BinaryTreeNode(const T& ele)
+	{
+		info = ele;
+		left = NULL;
+		right = NULL;
+	};		//给定数据的构造函数
+	BinaryTreeNode(const T& ele, BinaryTreeNode<T> *l, BinaryTreeNode<T> *r)
+	{
+		info = ele;
+		left = l;
+		right = r;
+	};		//给定数据和左右子树的构造函数
+	~BinaryTreeNode() {};
+public:
 	T value() const;		//返回当前结点数据
 	BinaryTreeNode<T>* leftchild() const;		//返回左子树
 	BinaryTreeNode<T>* rightchild() const;		//返回右子树
