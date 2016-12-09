@@ -57,6 +57,7 @@ class BinaryTree
 {
 private:
 	BinaryTreeNode<T>* root;
+	T endflag_value;
 public:
 	BinaryTree() { root = NULL; };
 	~BinaryTree() { DeleteBinaryTree(root); };
@@ -65,7 +66,10 @@ public:
 	BinaryTreeNode<T>* Parent(BinaryTreeNode<T>* current);		//返回某结点的父结点
 	BinaryTreeNode<T>* LeftSiBling(BinaryTreeNode<T>* current);		//返回某结点的左兄弟结点
 	BinaryTreeNode<T>* RightSiBling(BinaryTreeNode<T>* current);		//返回某结点的右兄弟结点
-	void CreatTree(const T& info, BinaryTree<T>& leftTree, BinaryTree<T>& RightTree);		//构造新树
+	BinaryTreeNode<T>* Find(BinaryTreeNode<T>* root, const T& data) const;		//查找
+	int Height(BinaryTreeNode<T>* root);		//求二叉树高度
+	int Size(BinaryTreeNode<T>* root);		//求二叉树结点数
+	void CreatTree(istream& in, BinaryTreeNode<T>*& Node);		//创建新树
 	void Visit(BinaryTreeNode<T>*);		//访问结点
 	void PreOrderRecusion(BinaryTreeNode<T>* root);		//深度优先递归前序遍历二叉树
 	void InOrderRecusion(BinaryTreeNode<T>* root);		//深度优先递归中序遍历二叉树
@@ -74,8 +78,19 @@ public:
 	void InOrderWithoutRecusion(BinaryTreeNode<T>* root);		//非递归中序遍历二叉树
 	void PostOrderWithoutRecusion(BinaryTreeNode<T>* root);		//非递归后序遍历二叉树
 	void LevelOrder(BinaryTreeNode<T>* root);		//层序遍历二叉树
-	void DeleteBinaryTree(BinaryTreeNode<T>* root);			//删除二叉树
+	void DeleteBinaryTree(BinaryTreeNode<T>* Node);			//删除二叉树
+	void SetEndFlag(cosnt T& val);		//设置结束标志
 };
+
+template<class T>
+inline bool BinaryTree<T>::isEmpty() const
+{
+	if (root == NULL)
+	{
+		return true;
+	}
+	return false;
+}
 
 template<class T>
 inline BinaryTreeNode<T>* BinaryTree<T>::Parent(BinaryTreeNode<T>* current)
@@ -99,6 +114,84 @@ inline BinaryTreeNode<T>* BinaryTree<T>::Parent(BinaryTreeNode<T>* current)
 		}
 	}
 	return NULL;
+}
+
+template<class T>
+inline BinaryTreeNode<T>* BinaryTree<T>::LeftSiBling(BinaryTreeNode<T>* current)
+{
+	BinaryTreeNode<T>* parent = Parent(current);
+	return parent->leftchild();
+}
+
+template<class T>
+inline BinaryTreeNode<T>* BinaryTree<T>::RightSiBling(BinaryTreeNode<T>* current)
+{
+	BinaryTreeNode<T>* parent = Parent(current);
+	return parent->rightchild();
+}
+
+template<class T>
+inline BinaryTreeNode<T>* BinaryTree<T>::Find(BinaryTreeNode<T>* Node = root, const T & data) const
+{
+	if (Node == NULL)
+	{
+		return NULL;
+	}
+	if (Node->info == data)
+	{
+		return Node;
+	}
+	if (BinaryTreeNode<T>* temp = Find(Node->leftchild(), data) != NULL)
+	{
+		return temp;
+	}
+	else
+		return Find(Node->rightchild(), data)
+}
+
+template<class T>
+inline int BinaryTree<T>::Height(BinaryTreeNode<T>* Node = root)
+{
+	if (Node == NULL)
+	{
+		return 0;
+	}
+	int lHeight = Height(Node->leftchild()) + 1;
+	int rHeight = Height(Node->rightchild()) + 1;
+	return lHeight>rHeight?lHeight:rHeight;
+}
+
+template<class T>
+inline int BinaryTree<T>::Size(BinaryTreeNode<T>* Node = root)
+{
+	if (Node == NULL)
+	{
+		return 0;
+	}
+	return (1 + Size(Node->leftchild()) + Size(Node->rightchild()));
+}
+
+template<class T>
+inline void BinaryTree<T>::CreatTree(istream & in, BinaryTreeNode<T>*& Node = root)
+{
+	T item;
+	in >> item;
+	if (item != endflag_value)
+	{
+		Node = new BinaryTreeNode<T>;
+		CreatTree(in, Node->leftchild());
+		CreatTree(in, Node->rightchild());
+	}
+	else
+	{
+		Node == NULL;
+	}
+}
+
+template<class T>
+inline void BinaryTree<T>::Visit(BinaryTreeNode<T>* current)
+{
+	cout << current->info << endl;
 }
 
 template<class T>
@@ -235,4 +328,84 @@ inline void BinaryTree<T>::LevelOrder(BinaryTreeNode<T>* root)
 		if (pointer->rightchild())
 			aQueue.push(pointer->rightchild());
 	}
+}
+
+template<class T>
+inline void BinaryTree<T>::DeleteBinaryTree(BinaryTreeNode<T>* Node = root)
+{
+	if (Node != NULL)
+	{
+		DeleteBinaryTree(Node->leftchild());
+		DeleteBinaryTree(Node->rightchild());
+		delete Node;
+	}
+}
+
+template<class T>
+inline void BinaryTree<T>::SetEndFlag(cosnt T & val)
+{
+	endflag_value = val;
+}
+
+template<class T>
+inline T BinaryTreeNode<T>::value() const
+{
+	return info;
+}
+
+template<class T>
+inline BinaryTreeNode<T>* BinaryTreeNode<T>::leftchild() const
+{
+	return left;
+}
+
+template<class T>
+inline BinaryTreeNode<T>* BinaryTreeNode<T>::rightchild() const
+{
+	return right;
+}
+
+template<class T>
+inline void BinaryTreeNode<T>::setLeftChild(BinaryTreeNode<T>* leftchild)
+{
+	left = leftchild;
+}
+
+template<class T>
+inline void BinaryTreeNode<T>::setRightChild(BinaryTreeNode<T>* rightchild)
+{
+	right = rightchild;
+}
+
+template<class T>
+inline void BinaryTreeNode<T>::setValue(const T & val)
+{
+	info = val;
+}
+
+template<class T>
+inline bool BinaryTreeNode<T>::isLeaf() const
+{
+	if (left == NULL && right == NULL)
+	{
+		return true;
+	}
+	return false;
+}
+
+template<class T>
+inline BinaryTreeNode<T>& BinaryTreeNode<T>::operator=(const BinaryTreeNode<T>& Node)
+{
+	info = Node.info;
+	if (left != NULL)
+	{
+		delete left;
+	}
+	if (right != NULL)
+	{
+		delete right;
+	}
+	left = Node.left;
+	right = Node.right;
+	return *this;
 }
