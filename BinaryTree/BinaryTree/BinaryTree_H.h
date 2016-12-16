@@ -155,7 +155,7 @@ inline BinaryTreeNode<T>* BinaryTree<T>::Find(const T & data, BinaryTreeNode<T>*
 	{
 		return Node;
 	}
-	if (BinaryTreeNode<T>* temp = Find(data, Node->leftchild()) != NULL)
+	if (BinaryTreeNode<T>* temp = Find(data, Node->leftchild()))
 	{
 		return temp;
 	}
@@ -165,7 +165,7 @@ inline BinaryTreeNode<T>* BinaryTree<T>::Find(const T & data, BinaryTreeNode<T>*
 
 //求二叉树高度
 template<class T>
-inline int BinaryTree<T>::Height(BinaryTreeNode<T>* Node = root)
+inline int BinaryTree<T>::Height(BinaryTreeNode<T>* Node)
 {
 	if (Node == NULL)
 	{
@@ -178,7 +178,7 @@ inline int BinaryTree<T>::Height(BinaryTreeNode<T>* Node = root)
 
 //求二叉树结点数
 template<class T>
-inline int BinaryTree<T>::Size(BinaryTreeNode<T>* Node = root)
+inline int BinaryTree<T>::Size(BinaryTreeNode<T>* Node)
 {
 	if (Node == NULL)
 	{
@@ -339,7 +339,7 @@ template<class T>
 inline void BinaryTree<T>::LevelOrder(BinaryTreeNode<T>* root)
 {
 	using std::queue;
-	queue<T> aQueue;
+	queue<BinaryTreeNode<T>*> aQueue;
 	BinaryTreeNode<T>* pointer = root;
 	if (pointer)
 		aQueue.push(pointer);
