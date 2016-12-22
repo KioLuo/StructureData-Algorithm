@@ -199,6 +199,7 @@ inline BinaryTreeNode<T>*& BinaryTree<T>::Parent(const T& val)
 			aStack.pop();
 		}
 	}
+	return pointer;
 }
 
 //É¾³ý¶þ²æÊ÷
