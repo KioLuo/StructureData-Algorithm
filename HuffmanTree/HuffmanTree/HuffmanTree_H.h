@@ -1,4 +1,5 @@
 #pragma once
+#include "MinHeap.h"
 
 template<class T> class HuffmanTree;
 
@@ -30,6 +31,9 @@ public:
 	T getInfo() const;
 	HuffmanTreeNode<T>* getLeft() const;
 	HuffmanTreeNode<T>* getRight() const;
+	void setLeft(HuffmanTreeNode<T>* leftchild);
+	void setRight(HuffmanTreeNode<T>* rightchild);
+	void setInfo(const T& val);
 	
 };
 
@@ -39,12 +43,11 @@ class HuffmanTree
 {
 private:
 	HuffmanTreeNode<T>* root;
+	void mergeTree(HuffmanTreeNode<T>& ht1, HuffmanTreeNode<T>& ht2, HuffmanTreeNode* parent);
 
 public:
 	HuffmanTree(T weight[], int n);
 	virtual ~HuffmanTree() { deleteTree(root); };
-
-public:
 
 };
 
@@ -68,9 +71,56 @@ inline HuffmanTreeNode<T>* HuffmanTreeNode<T>::getRight() const
 	return right;
 }
 
+template<class T>
+inline void HuffmanTreeNode<T>::setLeft(HuffmanTreeNode<T>* leftchild)
+{
+	left = leftchild;
+}
+
+template<class T>
+inline void HuffmanTreeNode<T>::setRight(HuffmanTreeNode<T>* rightchild)
+{
+	right = rightchild;
+}
+
+template<class T>
+inline void HuffmanTreeNode<T>::setInfo(const T & val)
+{
+	info = val;
+}
+
 //HuffmanTreeº¯Êý¶¨Òå
+template<class T>
+inline void HuffmanTree<T>::mergeTree(HuffmanTreeNode<T>& ht1, HuffmanTreeNode<T>& ht2, HuffmanTreeNode<T>* parent)
+{
+	if (parent != NULL)
+	{
+		parent->setLeft(&ht1);
+		parent->setRight(&ht2);
+		parent->setInfo(ht1.getInfo() + ht2.getInfo());
+	}
+}
+
 template<class T>
 inline HuffmanTree<T>::HuffmanTree(T weight[], int n)
 {
-
+	MinHeap<HuffmanTreeNode<T>> heap(n);
+	HuffmanTreeNode<T>* nodeList = new HuffmanTreeNode<T>[n];
+	for (int i = 0; i < n; i++)
+	{
+		nodeList[i].setInfo(weight[i]);
+		heap.insert(nodeList[i]);
+	}
+	
+	HuffmanTreeNode<T> *parent, leftChild, rightChild;
+	for (int i = 0; i < n - 1; i++)
+	{
+		parent = new HuffmanTreeNode<T>;
+		leftChild = heap.removeMin();
+		rightChild = heap.removeMin();
+		mergeTree(leftChild, rightChild, parent);
+		heap.insert(*parent);
+		root = parent;
+	}
+	delete[] nodeList;
 }
