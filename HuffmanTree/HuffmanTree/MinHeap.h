@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+using namespace std;
 
 //最小堆类模板定义
 template<class T>
@@ -26,6 +28,7 @@ public:
 	T removeMin();		//删除最小元素
 	void siftUp(int pos);		//从pos位置开始向上调整，使序列成为堆
 	void siftDown(int pos);		//从pos位置开始向下调整，是序列成为堆
+	void printHeap();		//打印堆元素
 };
 
 template<class T>
@@ -190,7 +193,16 @@ inline void MinHeap<T>::siftDown(int pos)
 		}
 		else break;
 	}
-	heapArray[j] = temp;
+	heapArray[i] = temp;
+}
+
+template<class T>
+inline void MinHeap<T>::printHeap()
+{
+	for (int i = 0; i < currentSize; i++)
+	{
+		cout << heapArray[i] << endl;
+	}
 }
 
 template<class T>
